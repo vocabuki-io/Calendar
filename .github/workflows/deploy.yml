@@ -26,6 +26,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # リポジトリの Pages を「GitHub Actions」ソースで自動的に有効化する
+          # （Settings → Pages を手動で開かなくてもワークフローが有効化する）
+          enablement: true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
