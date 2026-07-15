@@ -101,7 +101,6 @@
     prev: $('prevBtn'), next: $('nextBtn'),
     grid: $('grid'), dowCards: $('dowCards'), summaryRange: $('summaryRange'),
     syncDot: $('syncDot'), banner: $('banner'), toast: $('toast'),
-    lockBtn: $('lockBtn'),
   };
 
   function setSync(state) {
@@ -408,13 +407,14 @@
     if (e.key === 'ArrowLeft') el.prev.click();
     if (e.key === 'ArrowRight') el.next.click();
   });
-  el.lockBtn.addEventListener('click', () => {
-    try { localStorage.removeItem(TOKEN_KEY); } catch (_) {}
-    TOKEN = '';
-    setSync('ro');
-    showBanner(readonlyHtml(), false);
-    toast('この端末のトークンを削除しました');
-  });
+  // 拡大・縮小（ズーム）を無効化。iOS Safari は user-scalable=no を無視するため、
+  // ピンチ（複数指ジェスチャ）を JS でも抑止する。ダブルタップ拡大は CSS の
+  // touch-action: manipulation で無効化しており、タップ操作には干渉しない。
+  document.addEventListener('gesturestart', (e) => e.preventDefault(), { passive: false });
+  document.addEventListener('gesturechange', (e) => e.preventDefault(), { passive: false });
+  document.addEventListener('gestureend', (e) => e.preventDefault(), { passive: false });
+  document.addEventListener('touchmove', (e) => { if (e.touches && e.touches.length > 1) e.preventDefault(); }, { passive: false });
+  document.addEventListener('wheel', (e) => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
 
   // 他端末の変更を拾う：復帰時＆定期ポーリング
   document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(false); });
