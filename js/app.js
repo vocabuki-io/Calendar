@@ -354,13 +354,20 @@
       if (shouldExist) circles.delete(k); else circles.add(k);
       paintCell(k); saveCache();
       setSync('err');
-      if (e && (e.status === 401 || e.status === 403)) {
-        showBanner('トークンが無効か権限がありません。<code>contents:write</code> 権限のトークンを URL に付け直してください。', true);
-        toast('保存に失敗（権限エラー）');
+      try { console.error('save failed', e && e.status, e); } catch (_) {}
+      if (e && (e.status === 401 || e.status === 403 || e.status === 404)) {
+        // 401/403 = 権限不足、404 = fine-grained トークンがこのリポジトリに未対応、等。
+        showBanner(
+          `保存できませんでした。トークンが <b>${CONFIG.owner}/${CONFIG.repo}</b> に対して` +
+          ` <code>Contents: Read and write</code> 権限を持っているか確認してください` +
+          `（fine-grained トークンは対象リポジトリに <b>${CONFIG.repo}</b> を含める必要があります）。`,
+          true);
+        toast('保存に失敗（トークンの権限を確認）');
       } else if (e && e.message === 'NO_TOKEN') {
         showBanner(needTokenHtml(), false);
       } else {
-        toast('保存に失敗しました。通信を確認してください');
+        // status を持たない = ネットワーク到達不可など
+        toast('保存に失敗しました（通信エラー）。電波や接続を確認してください');
       }
     }
   }
