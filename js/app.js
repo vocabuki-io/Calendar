@@ -47,10 +47,10 @@
       token = clean(qp.get('t') || qp.get('token'));
     }
     if (token) {
+      // トークンは URL に残したまま端末にも保存する。
+      // （リンクをブックマーク/共有すればどの端末でもそのまま編集できるようにするため。
+      //   ※URL バー・履歴・ブラウザ同期に書き込みトークンが残る点は許容している）
       try { localStorage.setItem(TOKEN_KEY, token); } catch (_) {}
-      // URL からトークンを消す（履歴・共有時の漏洩防止）
-      const url = location.pathname + location.search.replace(/[?&](t|token)=[^&]*/g, '').replace(/^&/, '?');
-      history.replaceState(null, '', url.replace(/\?$/, ''));
     }
     if (!token) {
       try { token = clean(localStorage.getItem(TOKEN_KEY)); } catch (_) {}
