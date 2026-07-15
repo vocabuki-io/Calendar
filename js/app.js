@@ -16,9 +16,10 @@
     owner: 'vocabuki-io',
     repo: 'Calendar',
     dataPath: 'data.json',
-    // アプリ本体のブランチ（Pages 配信元）とは別のブランチにデータを保存し、
-    // 丸を付けるたびに Pages が再ビルドされるのを防ぐ。
-    dataBranch: 'calendar-data',
+    // データも main に保存し、ブランチは main の一本に統一する。
+    // 丸の付け外し（data.json だけの更新）では Pages を再ビルドしないよう、
+    // deploy.yml の push トリガーで data.json を paths-ignore している。
+    dataBranch: 'main',
   };
   (function autodetect() {
     const host = location.hostname;

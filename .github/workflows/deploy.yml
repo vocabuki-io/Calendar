@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    # 丸データ(data.json)だけの更新では再デプロイしない（無駄なビルドを防ぐ）
+    paths-ignore:
+      - 'data.json'
   workflow_dispatch:
 
 permissions:
