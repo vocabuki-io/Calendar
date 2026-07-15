@@ -18,7 +18,7 @@
 }
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { margin: 0; padding: 0; }
+html, body { margin: 0; padding: 0; touch-action: manipulation; }
 body {
   background: var(--bg);
   color: var(--ink);
@@ -160,13 +160,6 @@ body {
 }
 .dowcard__count.is-zero { color: var(--ink-faint); font-weight: 600; }
 .dowcard__unit { font-size: 10px; color: var(--ink-faint); }
-
-/* Footer */
-.footer { text-align: center; margin-top: 26px; }
-.linkbtn {
-  border: none; background: none; color: var(--ink-faint);
-  font-size: 12px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px;
-}
 
 /* Banner (read-only / token needed) */
 .banner {
